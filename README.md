@@ -3,6 +3,7 @@
 We got all kindsa sorts here:
 
 1. [Bubblesort](https://en.wikipedia.org/wiki/Bubble_sort)
+2. [Mergesort](https://en.wikipedia.org/wiki/Merge_sort)
 
 
 ## Requirements

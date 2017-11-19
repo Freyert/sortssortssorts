@@ -2,6 +2,7 @@
 extern crate sortssortssorts;
 extern crate test;
 use sortssortssorts::bubble;
+use sortssortssorts::merge;
 use std::fs::File;
 use std::io::BufReader;
 
@@ -11,19 +12,32 @@ mod tests {
     use test::Bencher;
     use std::io::BufRead;
 
-    #[bench]
-    fn bubble_sort(b: &mut Bencher) {
+    fn setup() -> Vec<i32>{
         let file = File::open("./benches/data/numbers.txt").unwrap();
         let buf_reader = BufReader::new(file);
         let line_iter = buf_reader.lines().map(|l| l.unwrap().parse::<i32>().unwrap());
-        let mut numbers: [i32; 10000] = [0; 10000]; //fill with 0s
-        for (i, num) in line_iter.enumerate() {
-           numbers[i] = num;
+        let mut numbers: Vec<i32> = Vec::with_capacity(10000);
+        for num in line_iter {
+           numbers.push(num);
         }
+        return numbers;
+    }
 
+    #[bench]
+    fn bubble_sort(b: &mut Bencher) {
+        let numbers = setup();
         b.iter(|| {
-            let mut this_numbers = numbers;
-            bubble::sort(&mut this_numbers)
+            let mut iter_nums = numbers.to_vec();
+            bubble::sort(&mut iter_nums);
+        })
+    }
+
+    #[bench]
+    fn merge_sort(b: &mut Bencher) {
+        let numbers = setup();
+        b.iter(|| {
+            let mut iter_nums = numbers.to_vec();
+            merge::sort(&mut iter_nums);
         })
     }
 }
